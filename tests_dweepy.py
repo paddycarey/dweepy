@@ -37,6 +37,24 @@ def check_valid_get_response(testcase, dweets):
 
 class BaseTestCase(unittest.TestCase):
 
+    def assertDictEqual(self, a, b, *args, **kwargs):
+        """Python < v2.7 compatibility. Assert 'a' > 'b'"""
+        try:
+            f = super(BaseTestCase, self).assertDictEqual
+        except AttributeError:
+            self.assertTrue(a == b, *args, **kwargs)
+        else:
+            f(a, b, *args, **kwargs)
+
+    def assertGreater(self, a, b, *args, **kwargs):
+        """Python < v2.7 compatibility. Assert 'a' > 'b'"""
+        try:
+            f = super(BaseTestCase, self).assertGreater
+        except AttributeError:
+            self.assertTrue(a > b, *args, **kwargs)
+        else:
+            f(a, b, *args, **kwargs)
+
     def assertIn(self, a, b, *args, **kwargs):
         """Python < v2.7 compatibility. Assert 'a' in 'b'"""
         try:
