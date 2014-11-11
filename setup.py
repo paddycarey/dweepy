@@ -16,7 +16,7 @@ setup(
     author_email='paddy@wackwack.co.uk',
     url='https://github.com/paddycarey/dweepy',
     py_modules=['dweepy'],
-    install_requires=['requests >= 2'],
+    install_requires=['requests >= 2, < 3'],
     license="MIT",
     zip_safe=False,
     keywords='dweepy dweet dweet.io',
