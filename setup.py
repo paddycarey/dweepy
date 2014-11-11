@@ -9,7 +9,7 @@ except ImportError:
 
 setup(
     name='dweepy',
-    version='0.0.1',
+    version='0.2.0',
     description='Dweepy is a Python client for dweet.io',
     long_description=open('README.rst').read(),
     author='Patrick Carey',
