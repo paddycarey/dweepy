@@ -168,7 +168,7 @@ class LockedStreamingDweetsTests(BaseTestCase):
     def setUp(self):
         self.my_thing_id = str(uuid.uuid4())
         dweepy.lock(self.my_thing_id, test_lock, test_key)
-        self.process = subprocess.Popen('./locked_streamer.sh {0} {1}'.format(self.my_thing_id, test_key), shell=True, stderr=subprocess.STDOUT)
+        self.process = subprocess.Popen('./streamer.sh {0} {1}'.format(self.my_thing_id, test_key), shell=True, stderr=subprocess.STDOUT)
 
     def tearDown(self):
         self.process.terminate()
