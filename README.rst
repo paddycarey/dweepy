@@ -2,6 +2,17 @@
 Dweepy
 ===============================
 
+.. image:: https://img.shields.io/pypi/v/dweepy.svg?style=flat
+    :target: https://pypi.python.org/pypi/dweepy/
+    :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/pypi/dm/dweepy.svg?style=flat
+    :target: https://pypi.python.org/pypi/dweepy/
+    :alt: Number of PyPI downloads
+
+.. image:: https://img.shields.io/travis/paddycarey/dweepy/master.png?style=flat
+    :target: https://travis-ci.org/paddycarey/dweepy
+    :alt: Travis CI build status
 
 Dweepy is a simple Python client for `dweet.io <https://dweet.io>`_. Dweepy has a full test suite and aims to have 100% coverage of the `dweet.io <https://dweet.io>`_ API (we're pretty much there already).
 
@@ -239,7 +250,7 @@ It is recommended that you use a virtualenv when developing or running the tests
 
 **NOTE:** In order for all of the tests to complete successfully you must have several environment variables set. There are numerous ways to accomplish this, but I like `forego <https://github.com/ddollar/forego>`_ (a golang port of the `foreman <https://github.com/ddollar/foreman>`_ utility).
 
-To use forego in your tests you should first create a ``.env`` file in the route of your repository with the following contents::
+To use forego in your tests you should first create a ``.env`` file in the root of your repository with the following contents::
 
     DWEET_LOCK=mylock
     DWEET_KEY=mykey
@@ -252,5 +263,5 @@ Once in place, you can run your tests locally with::
 Copyright & License
 -------------------
 
-Copyright © 2014 Patrick Carey (https://github.com/paddycarey)
-Licensed under the **MIT** license.
+| Copyright © 2014 Patrick Carey (https://github.com/paddycarey)
+| Licensed under the **MIT** license.
