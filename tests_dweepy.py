@@ -35,7 +35,28 @@ def check_valid_get_response(testcase, dweets):
     check_valid_dweet_response(testcase, dweets[0])
 
 
-class LockingTests(unittest.TestCase):
+class BaseTestCase(unittest.TestCase):
+
+    def assertIn(self, a, b, *args, **kwargs):
+        """Python < v2.7 compatibility. Assert 'a' in 'b'"""
+        try:
+            f = super(BaseTestCase, self).assertIn
+        except AttributeError:
+            self.assertTrue(a in b, *args, **kwargs)
+        else:
+            f(a, b, *args, **kwargs)
+
+    def assertIsInstance(self, a, b, *args, **kwargs):
+        """Python < v2.7 compatibility. Assert isinstance(a, b)"""
+        try:
+            f = super(BaseTestCase, self).assertIsInstance
+        except AttributeError:
+            self.assertTrue(isinstance(a, b), *args, **kwargs)
+        else:
+            f(a, b, *args, **kwargs)
+
+
+class LockingTests(BaseTestCase):
 
     def test_remove_lock_locked(self):
         """`remove_lock` should return a valid response when in use.
@@ -60,7 +81,7 @@ class LockingTests(unittest.TestCase):
         dweepy.unlock(my_thing_id, test_key)
 
 
-class LockedTests(unittest.TestCase):
+class LockedTests(BaseTestCase):
 
     def setUp(self):
         self.my_thing_id = str(uuid.uuid4())
@@ -124,7 +145,7 @@ class LockedTests(unittest.TestCase):
         check_valid_get_response(self, dweets)
 
 
-class LockedStreamingDweetsTests(unittest.TestCase):
+class LockedStreamingDweetsTests(BaseTestCase):
 
     def setUp(self):
         self.my_thing_id = str(uuid.uuid4())
@@ -145,7 +166,7 @@ class LockedStreamingDweetsTests(unittest.TestCase):
         self.assertGreater(dweets_heard, 0)
 
 
-class AlertTests(unittest.TestCase):
+class AlertTests(BaseTestCase):
 
     def setUp(self):
         self.my_thing_id = str(uuid.uuid4())
@@ -222,7 +243,7 @@ class AlertTests(unittest.TestCase):
             self.fail("shouldn't ever get called")
 
 
-class UnlockedDweetingTests(unittest.TestCase):
+class UnlockedDweetingTests(BaseTestCase):
 
     def test_valid_dweet(self):
         """`dweet` should return a valid response.
@@ -239,7 +260,7 @@ class UnlockedDweetingTests(unittest.TestCase):
         self.assertEqual(dweet['thing'], my_thing_id)
 
 
-class UnlockedReadingDweetsTests(unittest.TestCase):
+class UnlockedReadingDweetsTests(BaseTestCase):
 
     def setUp(self):
         self.my_thing_id = str(uuid.uuid4())
@@ -262,7 +283,7 @@ class UnlockedReadingDweetsTests(unittest.TestCase):
         check_valid_get_response(self, dweets)
 
 
-class UnlockedStreamingDweetsTests(unittest.TestCase):
+class UnlockedStreamingDweetsTests(BaseTestCase):
 
     def setUp(self):
         self.my_thing_id = str(uuid.uuid4())

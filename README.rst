@@ -18,7 +18,7 @@ Dweepy is a simple Python client for `dweet.io <https://dweet.io>`_. Dweepy has 
 
 Large portions of this README have been adapted from the README of the the official `javascript client from buglabs <https://github.com/buglabs/dweetio-client/blob/master/README.md>`_.
 
-For now, dweepy only supports Python 2.7, but Python 3 support is a high priority issue and should be resolved shortly.
+For now, dweepy only supports Python 2.6/2.7/PyPy, but Python 3 support is a high priority issue and should be resolved shortly.
 
 * Free software: MIT license
 * Documentation: https://github.com/paddycarey/dweepy

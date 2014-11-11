@@ -4,6 +4,7 @@ language: python
 
 python:
     - "2.7"
+    - "2.6"
     - "pypy"
 
 # command to run tests, e.g. python setup.py test
