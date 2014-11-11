@@ -1,3 +1,5 @@
 *.py[cod]
 dist/
-dweepy.egg-info/
+*.egg/
+*.egg-info/
+.env
