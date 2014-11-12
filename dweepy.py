@@ -8,7 +8,13 @@ from __future__ import unicode_literals
 # stdlib imports
 import datetime
 import json
-import urllib
+
+try:
+    # python 3
+    from urllib.parse import quote
+except ImportError:
+    # python 2
+    from urllib import quote
 
 # third-party imports
 import requests
@@ -19,6 +25,17 @@ __all__ = ['dweet', 'dweet_for', 'get_latest_dweet_for', 'get_dweets_for', 'list
 
 # base url for all requests
 BASE_URL = 'https://dweet.io'
+
+
+# python 2/3 compatibility shim for checking if value is a text type
+try:
+    basestring  # attempt to evaluate basestring
+
+    def isstr(s):
+        return isinstance(s, basestring)
+except NameError:
+    def isstr(s):
+        return isinstance(s, str)
 
 
 class DweepyError(Exception):
@@ -84,29 +101,31 @@ def get_dweets_for(thing_name, key=None):
     return _request('get', '/get/dweets/for/{0}'.format(thing_name), params=params)
 
 
-def _reconnect_listen_request(wrapped_function):
-    """Reconnect to the listen endpoint when the connection dies unexpectedly
+def _check_stream_timeout(started, timeout):
+    """Check if the timeout has been reached and raise a `StopIteration` if so.
     """
-    def _arguments_wrapper(thing_name, timeout=900, key=None):
-        start = datetime.datetime.utcnow()
-        while True:
+    if timeout:
+        elapsed = datetime.datetime.utcnow() - started
+        if elapsed.seconds > timeout:
+            raise StopIteration
+
+
+def _listen_for_dweets_from_response(response):
+    """Yields dweets as received from dweet.io's streaming API
+    """
+    streambuffer = ''
+    for byte in response.iter_content():
+        if byte:
+            streambuffer += byte.decode('ascii')
             try:
-                for x in wrapped_function(thing_name, timeout, key):
-                    yield x
-                    if timeout:
-                        elapsed = datetime.datetime.utcnow() - start
-                        if elapsed.seconds > timeout:
-                            raise StopIteration
-            except ChunkedEncodingError:
-                pass
-            if timeout:
-                elapsed = datetime.datetime.utcnow() - start
-                if elapsed.seconds > timeout:
-                    raise StopIteration
-    return _arguments_wrapper
+                dweet = json.loads(streambuffer.splitlines()[1])
+            except (IndexError, ValueError):
+                continue
+            if isstr(dweet):
+                yield json.loads(dweet)
+            streambuffer = ''
 
 
-@_reconnect_listen_request
 def listen_for_dweets_from(thing_name, timeout=900, key=None):
     """Create a real-time subscription to dweets
     """
@@ -116,20 +135,18 @@ def listen_for_dweets_from(thing_name, timeout=900, key=None):
         params = {'key': key}
     else:
         params = None
-    request = requests.Request("GET", url, params=params).prepare()
-    resp = session.send(request, stream=True, timeout=timeout)
 
-    streambuffer = ''
-    for byte in resp.iter_content():
-        if byte:
-            streambuffer += byte
-            try:
-                dweet = json.loads(streambuffer)
-            except ValueError:
-                continue
-            if isinstance(dweet, unicode):
-                yield json.loads(dweet)
-            streambuffer = ''
+    start = datetime.datetime.utcnow()
+    while True:
+        request = requests.Request("GET", url, params=params).prepare()
+        resp = session.send(request, stream=True, timeout=timeout)
+        try:
+            for x in _listen_for_dweets_from_response(resp):
+                yield x
+                _check_stream_timeout(start, timeout)
+        except (ChunkedEncodingError, requests.exceptions.ConnectionError):
+            pass
+        _check_stream_timeout(start, timeout)
 
 
 def remove_lock(lock, key):
@@ -156,7 +173,7 @@ def set_alert(thing_name, who, condition, key):
     return _request('get', '/alert/{0}/when/{1}/{2}'.format(
         ','.join(who),
         thing_name,
-        urllib.quote(condition),
+        quote(condition),
     ), params={'key': key})
 
 

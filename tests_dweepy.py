@@ -76,6 +76,18 @@ class BaseTestCase(unittest.TestCase):
 
 class LockingTests(BaseTestCase):
 
+    def setUp(self):
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
+
+    def tearDown(self):
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
+
     def test_remove_lock_locked(self):
         """`remove_lock` should return a valid response when in use.
         """
@@ -102,11 +114,19 @@ class LockingTests(BaseTestCase):
 class LockedTests(BaseTestCase):
 
     def setUp(self):
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
         self.my_thing_id = str(uuid.uuid4())
         dweepy.lock(self.my_thing_id, test_lock, test_key)
 
     def tearDown(self):
         dweepy.unlock(self.my_thing_id, test_key)
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
 
     def test_dweet_for_without_a_key(self):
         """`dweet_for` without a key should raise an exception.
@@ -166,6 +186,10 @@ class LockedTests(BaseTestCase):
 class LockedStreamingDweetsTests(BaseTestCase):
 
     def setUp(self):
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
         self.my_thing_id = str(uuid.uuid4())
         dweepy.lock(self.my_thing_id, test_lock, test_key)
         self.process = subprocess.Popen('./streamer.sh {0} {1}'.format(self.my_thing_id, test_key), shell=True, stderr=subprocess.STDOUT)
@@ -173,6 +197,10 @@ class LockedStreamingDweetsTests(BaseTestCase):
     def tearDown(self):
         self.process.terminate()
         dweepy.unlock(self.my_thing_id, test_key)
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
 
     def test_listen_for_dweets_from_with_key(self):
         """`listen_for_dweets_from` with a key should hear dweets.
@@ -187,11 +215,19 @@ class LockedStreamingDweetsTests(BaseTestCase):
 class AlertTests(BaseTestCase):
 
     def setUp(self):
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
         self.my_thing_id = str(uuid.uuid4())
         dweepy.lock(self.my_thing_id, test_lock, test_key)
 
     def tearDown(self):
         dweepy.unlock(self.my_thing_id, test_key)
+        try:
+            dweepy.remove_lock(test_lock, test_key)
+        except dweepy.DweepyError:
+            pass
 
     def test_set_alert(self):
         """`set_alert` should return a valid response

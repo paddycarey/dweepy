@@ -2,10 +2,15 @@
 
 language: python
 
+install:
+    - pip install -r requirements.txt
+
 python:
     - "2.7"
     - "2.6"
     - "pypy"
+    - "3.3"
+    - "3.4"
 
 # command to run tests, e.g. python setup.py test
-script: python setup.py test
+script: py.test -vv tests_dweepy.py
