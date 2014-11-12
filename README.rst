@@ -248,13 +248,17 @@ When dweepy encounters an error a ``DweepyError`` exception is raised. This can 
 Testing
 -------
 
-Dweepy has a full test suite (a straight port of `dweetio-client <https://github.com/buglabs/dweetio-client>`_'s). Assuming you have a full source checkout of the dweepy repository, running the tests is simple::
+Dweepy has a full test suite (a port of `dweetio-client's <https://github.com/buglabs/dweetio-client>`_ test suite). Assuming you have a full source checkout of the dweepy repository, running the tests is simple. First install the test requirements::
 
-    $ python setup.py test
+    $ pip install -r requirements.txt
+
+Then you can run the tests using py.test::
+
+    $ py.test -vv tests_dweepy.py
 
 It is recommended that you use a virtualenv when developing or running the tests to ensure that system libraries do not interfere with the tests.
 
-**NOTE:** In order for all of the tests to complete successfully you must have several environment variables set. There are numerous ways to accomplish this, but I like `forego <https://github.com/ddollar/forego>`_ (a golang port of the `foreman <https://github.com/ddollar/foreman>`_ utility).
+**NOTE:** In order for all of the tests to complete successfully you must set several environment variables. There are numerous ways to accomplish this, but I like `forego <https://github.com/ddollar/forego>`_ (a golang port of the `foreman <https://github.com/ddollar/foreman>`_ utility).
 
 To use forego in your tests you should first create a ``.env`` file in the root of your repository with the following contents::
 
@@ -264,6 +268,12 @@ To use forego in your tests you should first create a ``.env`` file in the root 
 Once in place, you can run your tests locally with::
 
     $ forego run python setup.py test
+
+If you want to test across multiple python versions, you can use ``tox``::
+
+    $ forego run tox
+
+**TIP:** If you're using Ubuntu, you can find older/newer versions of python than the one shipped with your distribution `here <https://launchpad.net/~fkrull/+archive/ubuntu/deadsnakes>`_. You can install as many as you like side by side without affecting your default python install.
 
 
 Copyright & License
