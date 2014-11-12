@@ -239,6 +239,12 @@ Once a thing has been locked, you must pass the key to the lock with any call yo
 Failure to pass a key or passing an incorrect key for a locked thing will result in an exception being raised.
 
 
+Error Handling
+~~~~~~~~~~~~~~
+
+When dweepy encounters an error a ``DweepyError`` exception is raised. This can happen either when a HTTP request to the dweet.io API fails with an invalid status code, or if the HTTP request succeeds but the request fails for some reason (invalid key, malformed request data, invalid action etc.).
+
+
 Testing
 -------
 
