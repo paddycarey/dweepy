@@ -144,7 +144,7 @@ def listen_for_dweets_from(thing_name, timeout=900, key=None):
             for x in _listen_for_dweets_from_response(resp):
                 yield x
                 _check_stream_timeout(start, timeout)
-        except (ChunkedEncodingError, requests.exceptions.ConnectionError):
+        except (ChunkedEncodingError, requests.exceptions.ConnectionError, requests.exceptions.ReadTimeout):
             pass
         _check_stream_timeout(start, timeout)
 
