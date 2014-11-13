@@ -248,13 +248,10 @@ When dweepy encounters an error a ``DweepyError`` exception is raised. This can 
 Testing
 -------
 
-Dweepy has a full test suite (a port of `dweetio-client's <https://github.com/buglabs/dweetio-client>`_ test suite). Assuming you have a full source checkout of the dweepy repository, running the tests is simple. First install the test requirements::
+Dweepy has a full test suite (a port of `dweetio-client's <https://github.com/buglabs/dweetio-client>`_ test suite). Assuming you have a full source checkout of the dweepy repository, running the tests is simple with ``tox``::
 
-    $ pip install -r requirements.txt
-
-Then you can run the tests using py.test::
-
-    $ py.test -vv tests_dweepy.py
+    $ pip install tox
+    $ tox
 
 It is recommended that you use a virtualenv when developing or running the tests to ensure that system libraries do not interfere with the tests.
 
@@ -267,11 +264,13 @@ To use forego in your tests you should first create a ``.env`` file in the root 
 
 Once in place, you can run your tests locally with::
 
-    $ forego run python setup.py test
-
-If you want to test across multiple python versions, you can use ``tox``::
-
     $ forego run tox
+
+If you want to test against a single python version, you can use ``tox -e`` e.g.::
+
+    $ forego run tox -e py27
+    $ forego run tox -e pypy
+    $ forego run tox -e py34
 
 **TIP:** If you're using Ubuntu, you can find older/newer versions of python than the one shipped with your distribution `here <https://launchpad.net/~fkrull/+archive/ubuntu/deadsnakes>`_. You can install as many as you like side by side without affecting your default python install.
 

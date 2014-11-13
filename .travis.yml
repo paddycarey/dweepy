@@ -3,14 +3,18 @@
 language: python
 
 install:
+    - pip install tox
     - pip install -r requirements.txt
 
 python:
     - "2.7"
-    - "2.6"
-    - "pypy"
-    - "3.3"
-    - "3.4"
+
+env:
+  - TOXENV=py26
+  - TOXENV=py27
+  - TOXENV=py32
+  - TOXENV=py33
+  - TOXENV=pypy
 
 # command to run tests, e.g. python setup.py test
-script: py.test -vv tests_dweepy.py
+script: tox
