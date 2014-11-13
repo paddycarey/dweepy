@@ -15,7 +15,12 @@ setup(
     author='Patrick Carey',
     author_email='paddy@wackwack.co.uk',
     url='https://github.com/paddycarey/dweepy',
-    py_modules=['dweepy'],
+    packages=[
+        'dweepy',
+    ],
+    package_dir={'dweepy':
+                 'dweepy'},
+    include_package_data=True,
     install_requires=['requests >= 2, < 3'],
     license="MIT",
     zip_safe=False,
