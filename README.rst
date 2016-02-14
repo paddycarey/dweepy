@@ -245,6 +245,29 @@ Error Handling
 When dweepy encounters an error a ``DweepyError`` exception is raised. This can happen either when a HTTP request to the dweet.io API fails with an invalid status code, or if the HTTP request succeeds but the request fails for some reason (invalid key, malformed request data, invalid action etc.).
 
 
+Request Sessions
+~~~~~~~~~~~~~~~~
+
+Each API call allows a request ``Session`` to be optionally set to persist certain parameters across dweepy calls. Sessions can be used for:
+
+* reusing the the underlying TCP connection if you're making several requests to the same host
+* configuring HTTP Proxies
+* enabling timeouts for HTTP requests
+
+Further information of requests session can be found in `Request Session Advanced Usage <http://docs.python-requests.org/en/master/user/advanced/>`_.
+
+To enable a session (in this case with a 5 second timeout)::
+
+    >>> import requests
+    >>> session_with_timeout = requests.session(timeout=5.0)
+
+
+The session may be used in all dweepy API calls::
+
+    >>> dweepy.dweet({'some_key': 'some_value'}, session=session_with_timeout)
+    >>> dweepy.dweet_for('this_is_a_thing', {'some_key': 'some_value'}, session=session_with_timeout)
+
+
 Testing
 -------
 
