@@ -278,5 +278,5 @@ If you want to test against a single python version, you can use ``tox -e`` e.g.
 Copyright & License
 -------------------
 
-| Copyright © 2014 Patrick Carey (https://github.com/paddycarey)
+| Copyright (c) 2014 Patrick Carey (https://github.com/paddycarey)
 | Licensed under the **MIT** license.
