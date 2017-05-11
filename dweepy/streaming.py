@@ -54,11 +54,11 @@ def _listen_for_dweets_from_response(response):
             streambuffer = ''
 
 
-def listen_for_dweets_from(thing_name, timeout=900, key=None):
+def listen_for_dweets_from(thing_name, timeout=900, key=None, session=None):
     """Create a real-time subscription to dweets
     """
     url = BASE_URL + '/listen/for/dweets/from/{0}'.format(thing_name)
-    session = requests.Session()
+    session = session or requests.Session()
     if key is not None:
         params = {'key': key}
     else:
