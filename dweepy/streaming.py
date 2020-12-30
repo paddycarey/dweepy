@@ -43,10 +43,7 @@ def _listen_for_dweets_from_response(response):
     """
     streambuffer = ''
     for byte in response.iter_content(chunk_size=2000):
-        if not byte:
-            break
-            
-        else:
+        if byte:
             streambuffer += byte.decode('ascii')
             try:
                 dweet = json.loads(streambuffer.splitlines()[1])
