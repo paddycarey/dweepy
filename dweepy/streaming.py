@@ -42,7 +42,7 @@ def _listen_for_dweets_from_response(response):
     """Yields dweets as received from dweet.io's streaming API
     """
     streambuffer = ''
-    for byte in response.iter_content(chunk_size=50):
+    for byte in response.iter_content(chunk_size=2000):
         if not byte:
             break
             
